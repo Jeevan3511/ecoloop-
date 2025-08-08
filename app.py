@@ -1,97 +1,86 @@
-# ecoloop_app.py
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
-st.set_page_config(page_title="EcoLoop+ – AI for Sustainable Circles of Life", layout="wide")
+st.set_page_config(page_title="EcoLoop+ | AI for Sustainability", layout="wide")
 
-st.title("🌍 EcoLoop+ – AI for Sustainable Circles of Life")
-st.markdown("Track your daily actions and see how they affect Earth 🌱, Water 🌊, Fire 🔥, Air 💨, and Space 🌌.")
+# ---------------------- HEADER ----------------------
+st.title("🌍 EcoLoop+ – AI-Powered Sustainability App")
+st.markdown("""
+Welcome to **EcoLoop+**, an AI-enhanced sustainability dashboard combining afforestation modeling,
+marine waste awareness, and eco-habit tracking based on the **Pancha Bhootas** – Earth, Water, Fire, Air, and Space.
+""")
 
-# --- Form ---
-with st.form("eco_form"):
-    st.header("📋 Daily Sustainability Tracker")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        waste = st.slider("Plastic Waste (grams)", 0, 500, 50)
-        transport = st.selectbox("Mode of Transport Today", ["Walking", "Cycling", "Bus", "Car", "Bike"])
-        electricity = st.slider("Electricity Used (kWh)", 0, 20, 5)
-    
-    with col2:
-        screen_time = st.slider("Screen Time (hrs)", 0, 15, 5)
-        water_used = st.slider("Water Used (litres)", 0, 500, 100)
-        tree_planted = st.number_input("No. of Trees Planted Today", min_value=0, step=1)
+# ---------------------- TABS ----------------------
+tabs = st.tabs(["Earth 🌱", "Water 🌊", "Fire 🔥", "Air 🌬️", "Space 🌌", "Eco AI Insights 🧠"])
 
-    submitted = st.form_submit_button("🔍 Analyze My Eco Impact")
+# ---------------------- EARTH TAB ----------------------
+with tabs[0]:
+    st.header("Afforestation & CO₂ Sequestration")
+    tree_species = st.selectbox("Choose Tree Species:", ["Banyan", "Neem", "Indian Almond", "Peepal"])
+    age = st.slider("Tree Age (in years):", 1, 100, 10)
 
-# --- Analysis ---
-if submitted:
-    # Simple AI scoring logic (can be improved)
-    scores = {
-        "Earth": max(0, 10 - waste / 50 + tree_planted),
-        "Water": max(0, 10 - water_used / 50),
-        "Fire": max(0, 10 - electricity / 2),
-        "Air": 10 if transport in ["Walking", "Cycling"] else 5 if transport == "Bus" else 3,
-        "Space": max(0, 10 - screen_time)
-    }
+    # Simple model: sequestration = species_factor * age ^ 1.2
+    species_factors = {"Banyan": 22, "Neem": 18, "Indian Almond": 20, "Peepal": 25}
+    sequestration = species_factors[tree_species] * (age ** 1.2)
+    st.success(f"Estimated CO₂ Sequestration: **{sequestration:.2f} kg/year**")
 
-    df = pd.DataFrame(scores, index=["Score"]).T
-    st.subheader("🌀 Elemental Balance (AI Score)")
-    st.dataframe(df)
+# ---------------------- WATER TAB ----------------------
+with tabs[1]:
+    st.header("Marine Plastic Waste Awareness")
+    uploaded = st.file_uploader("Upload a beach or water body image to detect plastic waste:", type=["jpg", "png"])
+    if uploaded:
+        st.image(uploaded, caption="Uploaded Image", use_column_width=True)
+        st.info("(AI detection placeholder) Plastic items detected: Bottles, Bags, Straws")
+        st.success("Awareness Level: High – Consider joining a local cleanup drive!")
 
-    # --- Radar Chart ---
-    categories = list(scores.keys())
-    values = list(scores.values())
-    values += values[:1]  # repeat first for closed loop
+# ---------------------- FIRE TAB ----------------------
+with tabs[2]:
+    st.header("Energy & Digital Footprint")
+    screen_time = st.slider("Average daily screen time (in hours):", 1, 15, 6)
+    device_count = st.number_input("Number of devices you use daily:", min_value=1, max_value=10, value=3)
+    energy_consumed = screen_time * device_count * 0.1  # kWh
+    st.metric(label="Estimated Daily Energy Use", value=f"{energy_consumed:.2f} kWh")
+    if energy_consumed > 3:
+        st.warning("High usage – Try reducing screen time or using power-saving modes.")
 
-    angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
-    angles += angles[:1]
+# ---------------------- AIR TAB ----------------------
+with tabs[3]:
+    st.header("Commuting & Carbon Emissions")
+    mode = st.selectbox("Your primary travel mode:", ["Cycle", "Walk", "Bus", "Petrol Bike", "Electric Scooter"])
+    distance = st.slider("Daily commute distance (km):", 1, 100, 10)
+    emission_factors = {"Cycle": 0, "Walk": 0, "Bus": 0.05, "Petrol Bike": 0.12, "Electric Scooter": 0.02}
+    emissions = emission_factors[mode] * distance
+    st.metric("Daily CO₂ Emissions from Travel", f"{emissions:.2f} kg")
+    if emissions > 1:
+        st.info("Try shifting to sustainable travel for shorter distances!")
 
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
-    ax.plot(angles, values, linewidth=2)
-    ax.fill(angles, values, alpha=0.25)
-    ax.set_yticklabels([])
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories)
-    st.pyplot(fig)
+# ---------------------- SPACE TAB ----------------------
+with tabs[4]:
+    st.header("E-Waste & Sustainable Tech Habits")
+    gadgets = st.multiselect("Select the gadgets you discard frequently:", ["Phone", "Charger", "Earphones", "Laptop", "Smartwatch"])
+    st.write(f"You selected {len(gadgets)} items. Consider recycling or donating usable tech!")
+    st.info("Try storing unused electronics in a designated e-waste box.")
 
-    # --- Save Entry ---
-    entry = {
-        "Date": datetime.now().strftime("%Y-%m-%d"),
-        "Waste": waste,
-        "Transport": transport,
-        "Electricity": electricity,
-        "Water": water_used,
-        "Screen Time": screen_time,
-        "Trees": tree_planted,
-        **scores
-    }
+# ---------------------- AI INSIGHTS TAB ----------------------
+with tabs[5]:
+    st.header("Eco AI Insights (Beta)")
+    st.markdown("Generating AI-based recommendations from your activity...")
+    eco_score = 100 - (emissions + energy_consumed + len(gadgets) * 2)
+    eco_score = max(0, min(eco_score, 100))
 
-    try:
-        log = pd.read_csv("eco_data.csv")
-    except FileNotFoundError:
-        log = pd.DataFrame()
+    st.subheader(f"🧭 Your Eco Sustainability Score: {eco_score:.1f}/100")
+    if eco_score > 80:
+        st.success("Excellent! You're an Eco Champion! 🌟")
+    elif eco_score > 50:
+        st.info("Good progress. Keep improving your habits.")
+    else:
+        st.warning("You can do better! Start small – every action counts.")
 
-    log = pd.concat([log, pd.DataFrame([entry])], ignore_index=True)
-    log.to_csv("eco_data.csv", index=False)
-    st.success("✅ Data saved for future analysis!")
-
-    st.download_button("📁 Download Full CSV", data=log.to_csv(index=False), file_name="EcoLoopData.csv")
-
+# ---------------------- FOOTER ----------------------
+st.markdown("""
 ---
-
-### 📌 Next Steps
-
-Let me know and I can help you:
-- Add **Streamlit Chatbot** using GPT API
-- Add **CO₂ Sequestration Model** (like in your afforestation project)
-- Add **Plastic Classifier** using AI and camera upload
-- Convert this into a **research paper**
-
----
-
-Would you like the **research paper template** or should I help you enhance this app with GPT integration or camera photo detection next?
+Made with ❤️ for a better planet. 
+**EcoLoop+** blends afforestation, marine protection, and tech-conscious living to support the **SDGs**.
+""")
