@@ -16,8 +16,7 @@ It integrates afforestation modeling, marine waste awareness, and daily sustaina
 
 ## 🔗 Live App
 
-Access here: [https://elqphruqhvty45486uqs4z.streamlit.app/](#)  
-*(Replace `#` with your actual live app URL)*
+Access here:https://elqphruqhvty45486uqs4z.streamlit.app/
 
 ---
 
