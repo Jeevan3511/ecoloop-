@@ -1,20 +1,17 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 from datetime import datetime
-import base64
 
 st.set_page_config(page_title="EcoLoop+ | AI for Sustainability", layout="wide")
 
 # ---------------------- HEADER ----------------------
-st.title("🌍 EcoLoop+ – AI-Powered Sustainability App")
+st.title("🌍 EcoLoop+ – Sustainability App")
 st.markdown("""
-Welcome to **EcoLoop+**, an AI-enhanced sustainability dashboard combining afforestation modeling,
+Welcome to **EcoLoop+**, a sustainability dashboard combining afforestation modeling,
 marine waste detection, energy tracking, commuting impact, and digital waste analysis through the lens of the **Pancha Bhootas** – Earth, Water, Fire, Air, and Space.
 """)
 
 # ---------------------- TABS ----------------------
-tabs = st.tabs(["Earth 🌱", "Water 🌊", "Fire 🔥", "Air 🌬️", "Space 🌌", "Eco AI Insights 🧠"])
+tabs = st.tabs(["Earth 🌱", "Water 🌊", "Fire 🔥", "Air 🌬️", "Space 🌌", "Knowledge Hub 📚"])
 
 # ---------------------- EARTH TAB ----------------------
 with tabs[0]:
@@ -28,29 +25,29 @@ with tabs[0]:
 
 # ---------------------- WATER TAB ----------------------
 with tabs[1]:
-    st.header("Marine Plastic Waste Detection (AI)")
+    st.header("Marine Plastic Waste Detection")
     uploaded = st.file_uploader("Upload a water body image to detect plastic waste:", type=["jpg", "png"])
     if uploaded:
         st.image(uploaded, caption="Uploaded Image", use_column_width=True)
-        st.info("Using AI to detect pollution levels (placeholder)")
+        st.info("Using AI to detect pollution levels (demo)")
         st.success("Result: High pollution level detected – Bottles, Bags visible")
     else:
-        st.markdown("⚠️ Upload an image of a river, lake or beach to assess pollution levels using AI.")
+        st.markdown("⚠️ Upload an image of a river, lake or beach to assess pollution levels.")
 
 # ---------------------- FIRE TAB ----------------------
 with tabs[2]:
     st.header("Energy & Digital Footprint")
     screen_time = st.slider("Average daily screen time (in hours):", 1, 15, 6)
     device_count = st.number_input("Number of devices you use daily:", min_value=1, max_value=10, value=3)
-    energy_consumed = screen_time * device_count * 0.12  # updated to 0.12 kWh/hour
+    energy_consumed = screen_time * device_count * 0.12
     st.metric(label="Estimated Daily Energy Use", value=f"{energy_consumed:.2f} kWh")
 
     ai_model_usage = st.slider("Monthly AI model usage (hours):", 0, 100, 10)
-    ai_emissions = ai_model_usage * 20  # 20 kg CO2 per GPU hour
+    ai_emissions = ai_model_usage * 20
     st.metric("AI Carbon Footprint Estimate", f"{ai_emissions:.2f} kg/month")
 
     if ai_emissions > 100:
-        st.warning("⚠️ High AI usage detected. Consider optimizing your AI workflows to reduce emissions.")
+        st.warning("⚠️ High AI usage detected. Optimize your AI workflows to reduce emissions.")
 
 # ---------------------- AIR TAB ----------------------
 with tabs[3]:
@@ -70,24 +67,45 @@ with tabs[4]:
     st.write(f"You selected {len(gadgets)} items. Recycle or donate to reduce digital waste.")
     st.info("💡 Tip: Store unused electronics in a designated e-waste box.")
 
-# ---------------------- AI INSIGHTS TAB ----------------------
+# ---------------------- KNOWLEDGE HUB TAB ----------------------
 with tabs[5]:
-    st.header("Eco AI Insights (Beta)")
-    st.markdown("AI-generated sustainability summary based on your inputs")
+    st.markdown("<h2 style='color:#4B0082;'>💡 Knowledge Hub</h2>", unsafe_allow_html=True)
+    st.write("Learn from **real-world sustainability case studies** and get inspired by **powerful quotes**.")
 
-    eco_score = 100 - (emissions + energy_consumed + ai_emissions * 0.2 + len(gadgets) * 3)
-    eco_score = max(0, min(eco_score, 100))
-    
-    st.subheader(f"♻️ Eco Sustainability Score: {eco_score:.1f}/100")
-    if eco_score > 85:
-        st.success("🌟 Excellent! You're an Eco Champion.")
-    elif eco_score > 60:
-        st.info("👍 Good work. Small steps lead to big changes.")
-    else:
-        st.warning("🔧 Room for improvement. Try reducing device and energy usage.")
+    # Case Studies
+    with st.expander("🌳 Afforestation in Andhra Pradesh"):
+        st.write("""
+        **Goal:** Increase green cover by 30% in 5 years.  
+        **Impact:** 50,000+ trees planted, biodiversity restored.  
+        **Lesson:** Community engagement is as important as planting trees.
+        """)
+
+    with st.expander("🌊 AI for Ocean Cleanup"):
+        st.write("""
+        **Goal:** Detect floating plastic and trigger cleanup drones.  
+        **Impact:** 20 tons of waste removed in 6 months.  
+        **Lesson:** Technology + activism accelerates change.
+        """)
+
+    with st.expander("☀️ Solar Villages in Rajasthan"):
+        st.write("""
+        **Goal:** Train rural women to install solar systems.  
+        **Impact:** 1,300+ villages electrified, reducing fossil fuel use.  
+        **Lesson:** Empowering locals creates lasting solutions.
+        """)
+
+    # Quotes
+    st.markdown("### 🌟 Inspiring Quotes")
+    quotes = [
+        "“The best time to plant a tree was 20 years ago. The second best time is now.” – Chinese Proverb",
+        "“We do not inherit the Earth from our ancestors, we borrow it from our children.” – Native American Proverb",
+        "“Small acts, when multiplied by millions of people, can transform the world.” – Howard Zinn"
+    ]
+    for q in quotes:
+        st.markdown(f"<div style='background-color:#f0f8ff; padding:10px; border-radius:8px;'>{q}</div>", unsafe_allow_html=True)
 
 # ---------------------- FOOTER ----------------------
 st.markdown("""
 ---
-Made with ❤️ by JEEVAN MAGAPU | Promoting Sustainability with AI | Inspired by the Five Elements 🌿
+Made with ❤️ by JEEVAN MAGAPU | Promoting Sustainability | Inspired by the Five Elements 🌿
 """)
