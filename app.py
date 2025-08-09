@@ -77,17 +77,23 @@ with tabs[5]:
         border-radius: 12px;
         padding: 14px;
         color: #222;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border: 1px solid #ddd;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         font-family: "Segoe UI", sans-serif;
     }
-    .earth  { background: #e6f4ea; border-left: 6px solid #2e7d32; }
-    .water  { background: #e0f7fa; border-left: 6px solid #0288d1; }
-    .fire   { background: #fff3e0; border-left: 6px solid #f57c00; }
-    .air    { background: #f1f8ff; border-left: 6px solid #00acc1; }
-    .space  { background: #ede7f6; border-left: 6px solid #6a1b9a; }
     .kh-title { font-weight: 700; font-size: 18px; margin-bottom: 6px; }
-    .kh-text { font-size: 14px; line-height: 1.4; }
-    .quote { font-style: italic; opacity: 0.9; }
+    .kh-text { font-size: 14px; line-height: 1.5; }
+    .quote { font-style: italic; opacity: 0.9; margin-top: 6px; }
+    .final-quote {
+        margin-top: 25px;
+        padding: 15px;
+        background: #f7f7f7;
+        border-left: 5px solid #444;
+        font-size: 15px;
+        font-style: italic;
+        text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -95,7 +101,7 @@ with tabs[5]:
 
     # 🌍 Earth
     st.markdown("""
-    <div class='kh-card earth'>
+    <div class='kh-card'>
       <div class='kh-title'>🌍 Earth</div>
       <div class='kh-text'>
         Plastic waste and deforestation degrade soil and threaten biodiversity.  
@@ -108,7 +114,7 @@ with tabs[5]:
 
     # 💧 Water
     st.markdown("""
-    <div class='kh-card water'>
+    <div class='kh-card'>
       <div class='kh-title'>💧 Water</div>
       <div class='kh-text'>
         25,000+ tonnes of plastic enter Indian rivers annually, harming aquatic life.  
@@ -121,7 +127,7 @@ with tabs[5]:
 
     # 🔥 Fire
     st.markdown("""
-    <div class='kh-card fire'>
+    <div class='kh-card'>
       <div class='kh-title'>🔥 Fire</div>
       <div class='kh-text'>
         Open burning of plastic in India emits 1.2M tonnes CO₂ yearly.  
@@ -134,7 +140,7 @@ with tabs[5]:
 
     # 🌬 Air
     st.markdown("""
-    <div class='kh-card air'>
+    <div class='kh-card'>
       <div class='kh-title'>🌬 Air</div>
       <div class='kh-text'>
         Air pollution kills 1.6M people annually in India.  
@@ -147,7 +153,7 @@ with tabs[5]:
 
     # 🌌 Space
     st.markdown("""
-    <div class='kh-card space'>
+    <div class='kh-card'>
       <div class='kh-title'>🌌 Space</div>
       <div class='kh-text'>
         Space debris threatens both orbital & Earth ecosystems.  
@@ -159,6 +165,13 @@ with tabs[5]:
     """, unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    # Final Quote
+    st.markdown("""
+    <div class='final-quote'>
+        🌱 "In every drop of water, in every breath of air, in every grain of soil — lies the story of our survival."
+    </div>
+    """, unsafe_allow_html=True)
 # ---------------------- FOOTER ----------------------
 st.markdown("""
 ---
